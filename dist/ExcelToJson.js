@@ -1,6 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.run = void 0;
+const path_1 = __importDefault(require("path"));
 const JsonToTs_1 = require("./JsonToTs");
 const main_1 = require("./main");
 const fs = require('fs');
@@ -117,8 +121,8 @@ async function convert(src, dst, name, isClient) {
     }
 }
 function run() {
-    var inputExcelPath = main_1.config.PathExcel + `\\`;
-    var outJsonPath = main_1.config.PathJson + `\\`;
+    var inputExcelPath = path_1.default.join(__dirname, main_1.config.PathExcel);
+    var outJsonPath = path_1.default.join(__dirname, main_1.config.PathJson);
     const files = fs.readdirSync(inputExcelPath);
     files.forEach((f) => {
         let name = f.substring(0, f.indexOf("."));

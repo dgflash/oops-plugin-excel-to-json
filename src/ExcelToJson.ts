@@ -1,3 +1,4 @@
+import path from "path";
 import { createTs } from "./JsonToTs";
 import { config } from "./main";
 
@@ -120,8 +121,8 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
 }
 
 export function run() {
-    var inputExcelPath = config.PathExcel + `\\`;
-    var outJsonPath = config.PathJson + `\\`;
+    var inputExcelPath = path.join(__dirname, config.PathExcel);
+    var outJsonPath = path.join(__dirname, config.PathJson);
     const files = fs.readdirSync(inputExcelPath);
     files.forEach((f: any) => {
         let name = f.substring(0, f.indexOf("."));

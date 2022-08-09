@@ -1,3 +1,10 @@
+/*
+ * @Author: dgflash
+ * @Date: 2022-07-26 18:21:52
+ * @LastEditors: dgflash
+ * @LastEditTime: 2022-08-09 11:53:10
+ */
+import path from "path";
 import { config } from "./main";
 
 const fs = require('fs')
@@ -30,7 +37,7 @@ export async function createTs(name: string, fieldType: any, data: any, primary:
     }
 
     var script = `
-import { JsonUtil } from "../../../core/utils/JsonUtil";
+import { JsonUtil } from "../../../../../extensions/oops-plugin-framework/assets/core/utils/JsonUtil";
 
 export class Table${name} {
     static TableName: string = "${name}";
@@ -48,5 +55,8 @@ ${field}
 }
     `;
 
-    await fs.writeFileSync(`${config.PathTs + "\\Table" + name}.ts`, script);
+    var p = path.join(__dirname, config.PathTs);
+    console.log(p);
+    
+    await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }

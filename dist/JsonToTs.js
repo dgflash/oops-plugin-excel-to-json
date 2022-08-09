@@ -1,6 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createTs = void 0;
+/*
+ * @Author: dgflash
+ * @Date: 2022-07-26 18:21:52
+ * @LastEditors: dgflash
+ * @LastEditTime: 2022-08-09 11:53:10
+ */
+const path_1 = __importDefault(require("path"));
 const main_1 = require("./main");
 const fs = require('fs');
 async function createTs(name, fieldType, data, primary) {
@@ -29,7 +39,7 @@ async function createTs(name, fieldType, data, primary) {
         }
     }
     var script = `
-import { JsonUtil } from "../../../core/utils/JsonUtil";
+import { JsonUtil } from "../../../../../extensions/oops-plugin-framework/assets/core/utils/JsonUtil";
 
 export class Table${name} {
     static TableName: string = "${name}";
@@ -46,6 +56,8 @@ export class Table${name} {
 ${field}
 }
     `;
-    await fs.writeFileSync(`${main_1.config.PathTs + "\\Table" + name}.ts`, script);
+    var p = path_1.default.join(__dirname, main_1.config.PathTs);
+    console.log(p);
+    await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }
 exports.createTs = createTs;
