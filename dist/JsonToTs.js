@@ -8,7 +8,7 @@ exports.createTs = void 0;
  * @Author: dgflash
  * @Date: 2022-07-26 18:21:52
  * @LastEditors: dgflash
- * @LastEditTime: 2022-08-09 11:53:10
+ * @LastEditTime: 2022-08-16 12:12:21
  */
 const path_1 = __importDefault(require("path"));
 const main_1 = require("./main");
@@ -22,7 +22,8 @@ async function createTs(name, fieldType, data, primary) {
     primary.forEach(key => {
         script_init_params += `${key}: number, `;
         script_init_data += `[${key}]`;
-        script_init_var += `${key}: number = 0;\r    `;
+        script_init_var += `/** ${fieldType[key].zh} */
+    ${key}: number = 0;\r    `;
         script_init_value += `this.${key} = ${key};\r        `;
     });
     script_init_params = script_init_params.substring(0, script_init_params.length - 2);
@@ -33,7 +34,8 @@ async function createTs(name, fieldType, data, primary) {
     for (var id in fieldType) {
         if (primary.indexOf(id) == -1) {
             field += `
-    get ${id}(): ${fieldType[id]} {
+    /** ${fieldType[id].zh} */
+    get ${id}(): ${fieldType[id].en} {
         return this.data.${id};
     }`;
         }
@@ -57,7 +59,6 @@ ${field}
 }
     `;
     var p = path_1.default.join(__dirname, main_1.config.PathTs);
-    console.log(p);
     await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }
 exports.createTs = createTs;

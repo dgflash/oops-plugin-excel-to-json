@@ -14,6 +14,7 @@ const excel = require('exceljs');
  */
 async function convert(src: string, dst: string, name: string, isClient: boolean) {
     let r: any = {};
+    let names: any[] = [];          // 文名字段名
     let keys: any[] = [];           // 字段名
     let types: any[] = [];          // 通用字段数据类型
     let types_client: any = {};     // 客户端数据类型
@@ -29,12 +30,14 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
     const worksheet = workbook.getWorksheet(1);                 // 获取第一个worksheet 
     worksheet.eachRow((row: any, rowNumber: number) => {
         let data: any = {};
+        let name = "";
         row.eachCell((cell: any, colNumber: number) => {
             const value = cell.value;
-            if (rowNumber === 1) {                              // 字段名
+            if (rowNumber === 1) {                              // 字段中文名
+                names.push(value);
                 if (value.indexOf("【KEY】") > -1) primary_index.push(colNumber);
             }
-            if (rowNumber === 2) {                              // 字段名
+            else if (rowNumber === 2) {                         // 字段英文名
                 keys.push(value);
                 if (primary_index.indexOf(colNumber) > -1) primary.push(value);
             }
@@ -58,19 +61,31 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
                     switch (type) {
                         case "int":
                             data[key] = parseInt(value);
-                            types_client[key] = "number";
+                            types_client[key] = {
+                                en: "number",
+                                zh: names[index]
+                            };
                             break;
                         case "float":
                             data[key] = parseFloat(value);
-                            types_client[key] = "number";
+                            types_client[key] = {
+                                en: "number",
+                                zh: names[index]
+                            };
                             break;
                         case "string":
                             data[key] = value;
-                            types_client[key] = "string";
+                            types_client[key] = {
+                                en: "string",
+                                zh: names[index]
+                            };
                             break;
                         case "any":
                             data[key] = JSON.parse(value);
-                            types_client[key] = "any";
+                            types_client[key] = {
+                                en: "any",
+                                zh: names[index]
+                            };
                             break;
                     }
                 }
