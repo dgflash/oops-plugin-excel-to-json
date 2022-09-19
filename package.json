@@ -22,11 +22,19 @@
                         "ui": "ui-input",
                         "default": ""
                     },
-                    "PathJson": {
+                    "PathJsonClient": {
                         "ui": "ui-input",
                         "default": ""
                     },
-                    "PathTs": {
+                    "PathTsClient": {
+                        "ui": "ui-input",
+                        "default": ""
+                    },
+                    "PathJsonServer": {
+                        "ui": "ui-input",
+                        "default": ""
+                    },
+                    "PathTsServer": {
                         "ui": "ui-input",
                         "default": ""
                     }

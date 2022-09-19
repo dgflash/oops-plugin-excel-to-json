@@ -1,5 +1,5 @@
 import path from "path";
-import { createTs } from "./JsonToTs";
+import { createTsClient, createTsServer } from "./JsonToTs";
 import { config } from "./main";
 
 const fs = require('fs')
@@ -30,7 +30,6 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
     const worksheet = workbook.getWorksheet(1);                 // 获取第一个worksheet 
     worksheet.eachRow((row: any, rowNumber: number) => {
         let data: any = {};
-        let name = "";
         row.eachCell((cell: any, colNumber: number) => {
             const value = cell.value;
             if (rowNumber === 1) {                              // 字段中文名
@@ -127,7 +126,12 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
         await fs.writeFileSync(dst, JSON.stringify(r));
 
         // 生成客户端脚本
-        if (isClient) createTs(name, types_client, r, primary);
+        if (isClient) {
+            createTsClient(name, types_client, r, primary);
+        }
+        else {
+            createTsServer(name, types_client, r, primary);
+        }
         console.log(isClient ? "客户端数据" : "服务器数据", "生成成功", dst);
     }
     else {
@@ -137,14 +141,15 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
 
 export function run() {
     var inputExcelPath = path.join(__dirname, config.PathExcel);
-    var outJsonPath = path.join(__dirname, config.PathJson);
+    var outJsonPathClient = path.join(__dirname, config.PathJsonClient);
+    var outJsonPathServer = path.join(__dirname, config.PathJsonServer);
     const files = fs.readdirSync(inputExcelPath);
     files.forEach((f: any) => {
         let name = f.substring(0, f.indexOf("."));
         let ext = f.toString().substring(f.lastIndexOf(".") + 1);
         if (ext == "xlsx") {
-            // convert(inputExcelPath + f, inputExcelPath + "server\\" + name + ".json", name, false);        // 服务器数据
-            convert(inputExcelPath + f, outJsonPath + name + ".json", name, true);                         // 客户端数据
+            convert(inputExcelPath + f, outJsonPathServer + name + ".json", name, false);                  // 服务器数据
+            convert(inputExcelPath + f, outJsonPathClient + name + ".json", name, true);                   // 客户端数据
         }
     });
 }
