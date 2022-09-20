@@ -2,7 +2,7 @@
  * @Author: dgflash
  * @Date: 2022-07-26 18:21:52
  * @LastEditors: dgflash
- * @LastEditTime: 2022-09-19 16:20:35
+ * @LastEditTime: 2022-09-20 13:47:41
  */
 import path from "path";
 import { config } from "./main";
@@ -57,7 +57,7 @@ ${field}
 }
     `;
 
-    var p = path.join(__dirname, config.PathTsClient);
+    var p = path.join(__dirname, config.PathTsClient.replace("project://", "../../../") + "/");
     await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }
 
@@ -113,7 +113,7 @@ ${field}
 }
     `;
 
-    var p = path.join(__dirname, config.PathTsServer);
+    var p = path.join(__dirname, config.PathTsServer.replace("project://", "../../../") + "/");
     await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }
 

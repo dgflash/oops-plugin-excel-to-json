@@ -19,23 +19,43 @@
                 "label": "Excel to Json",
                 "content": {
                     "PathExcel": {
-                        "ui": "ui-input",
+                        "ui": "ui-file",
+                        "attributes": {
+                            "type": "directory",
+                            "protocols": "project"
+                        },
                         "default": ""
                     },
                     "PathJsonClient": {
-                        "ui": "ui-input",
+                        "ui": "ui-file",
+                        "attributes": {
+                            "type": "directory",
+                            "protocols": "project"
+                        },
                         "default": ""
                     },
                     "PathTsClient": {
-                        "ui": "ui-input",
+                        "ui": "ui-file",
+                        "attributes": {
+                            "type": "directory",
+                            "protocols": "project"
+                        },
                         "default": ""
                     },
                     "PathJsonServer": {
-                        "ui": "ui-input",
+                        "ui": "ui-file",
+                        "attributes": {
+                            "type": "directory",
+                            "protocols": "project"
+                        },
                         "default": ""
                     },
                     "PathTsServer": {
-                        "ui": "ui-input",
+                        "ui": "ui-file",
+                        "attributes": {
+                            "type": "directory",
+                            "protocols": "project"
+                        },
                         "default": ""
                     }
                 }

@@ -140,9 +140,9 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
 }
 
 export function run() {
-    var inputExcelPath = path.join(__dirname, config.PathExcel);
-    var outJsonPathClient = path.join(__dirname, config.PathJsonClient);
-    var outJsonPathServer = path.join(__dirname, config.PathJsonServer);
+    var inputExcelPath = path.join(__dirname, config.PathExcel.replace("project://", "../../../") + "/");
+    var outJsonPathClient = path.join(__dirname, config.PathJsonClient.replace("project://", "../../../") + "/");
+    var outJsonPathServer = path.join(__dirname, config.PathJsonServer.replace("project://", "../../../") + "/");
     const files = fs.readdirSync(inputExcelPath);
     files.forEach((f: any) => {
         let name = f.substring(0, f.indexOf("."));

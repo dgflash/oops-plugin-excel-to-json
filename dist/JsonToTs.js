@@ -8,7 +8,7 @@ exports.createTsServer = exports.createTsClient = void 0;
  * @Author: dgflash
  * @Date: 2022-07-26 18:21:52
  * @LastEditors: dgflash
- * @LastEditTime: 2022-09-19 16:20:35
+ * @LastEditTime: 2022-09-20 13:47:41
  */
 const path_1 = __importDefault(require("path"));
 const main_1 = require("./main");
@@ -58,7 +58,7 @@ export class Table${name} {
 ${field}
 }
     `;
-    var p = path_1.default.join(__dirname, main_1.config.PathTsClient);
+    var p = path_1.default.join(__dirname, main_1.config.PathTsClient.replace("project://", "../../../") + "/");
     await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }
 exports.createTsClient = createTsClient;
@@ -111,7 +111,7 @@ export class Table${name} {
 ${field}
 }
     `;
-    var p = path_1.default.join(__dirname, main_1.config.PathTsServer);
+    var p = path_1.default.join(__dirname, main_1.config.PathTsServer.replace("project://", "../../../") + "/");
     await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }
 exports.createTsServer = createTsServer;
