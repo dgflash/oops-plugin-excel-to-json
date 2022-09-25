@@ -1,3 +1,5 @@
+### 为oops-moba定制配置、脚本生成插件
+
 ### 游戏配置数据生成 + 数据对象代码生成器插件
 ![Cocos Creator 3.x 配套游戏配置数据生成 + 数据对象代码生成器插件](https://img-blog.csdnimg.cn/0b3d49ff88ef46b0aad7e3835967c7ea.png)
 
