@@ -1,5 +1,5 @@
 import path from "path";
-import { createTs } from "./JsonToTs";
+import { createTsClient, createTsServer } from "./JsonToTs";
 import { config } from "./main";
 
 const fs = require('fs')
@@ -30,9 +30,9 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
     const worksheet = workbook.getWorksheet(1);                 // 获取第一个worksheet 
     worksheet.eachRow((row: any, rowNumber: number) => {
         let data: any = {};
-        let name = "";
         row.eachCell((cell: any, colNumber: number) => {
-            const value = cell.value;
+            const value = cell.text;
+            // console.warn(cell.text, cell.string, cell.number, cell.result, cell.formula)
             if (rowNumber === 1) {                              // 字段中文名
                 names.push(value);
                 if (value.indexOf("【KEY】") > -1) primary_index.push(colNumber);
@@ -50,30 +50,45 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
             else if (isClient == true && rowNumber === 5) {     // 客户端数据类型 
                 clients.push(value);
             }
-            else {
+            else if (rowNumber > 5) {
                 let index = colNumber - 1;
                 let type = types[index];
                 let server = servers[index];
                 let client = clients[index];
+
+                // 验证是否输出这个字段
                 let isWrite = isClient && client === "client" || isClient == false && server === "server";
                 if (isWrite) {
                     let key = keys[index];
                     switch (type) {
                         case "int":
-                            data[key] = parseInt(value);
+                            // console.warn(`${index}int`, key, value, cell.string, cell.number, cell.result)
+                            if (cell.formula) {
+                                data[key] = parseInt(cell.result);
+                            }
+                            else {
+                                data[key] = parseInt(value);
+                            }
                             types_client[key] = {
                                 en: "number",
                                 zh: names[index]
                             };
                             break;
                         case "float":
-                            data[key] = parseFloat(value);
+                            // console.warn(`${index}int`, key, value, cell.string, cell.number, cell.result)
+                            if (cell.formula) {
+                                data[key] = parseFloat(cell.result);
+                            }
+                            else {
+                                data[key] = parseFloat(value);
+                            }
                             types_client[key] = {
                                 en: "number",
                                 zh: names[index]
                             };
                             break;
                         case "string":
+                            // console.warn(`${index}int`, key, value, cell.string, cell.number, cell.result)
                             data[key] = value;
                             types_client[key] = {
                                 en: "string",
@@ -81,11 +96,18 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
                             };
                             break;
                         case "any":
-                            data[key] = JSON.parse(value);
-                            types_client[key] = {
-                                en: "any",
-                                zh: names[index]
-                            };
+                            // console.warn(`${index}int`, key, value, cell.string, cell.number, cell.result)
+                            try {
+                                data[key] = JSON.parse(value);
+                                types_client[key] = {
+                                    en: "any",
+                                    zh: names[index]
+                                };
+                            }
+                            catch {
+                                console.log('Cell ' + cell.address + ' has value ' + cell.text);
+                                console.warn(`文件【${src}】的【${key}】字段【${data[key]}】类型数据【${value}】JSON转字段串错误【${client}】`);
+                            }
                             break;
                     }
                 }
@@ -127,7 +149,12 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
         await fs.writeFileSync(dst, JSON.stringify(r));
 
         // 生成客户端脚本
-        if (isClient) createTs(name, types_client, r, primary);
+        if (isClient) {
+            createTsClient(name, types_client, r, primary);
+        }
+        else {
+            createTsServer(name, types_client, r, primary);
+        }
         console.log(isClient ? "客户端数据" : "服务器数据", "生成成功", dst);
     }
     else {
@@ -136,15 +163,19 @@ async function convert(src: string, dst: string, name: string, isClient: boolean
 }
 
 export function run() {
-    var inputExcelPath = path.join(__dirname, config.PathExcel);
-    var outJsonPath = path.join(__dirname, config.PathJson);
+    var inputExcelPath = path.join(__dirname, config.PathExcel.replace("project://", "../../../") + "/");
+    var outJsonPathClient = path.join(__dirname, config.PathJsonClient.replace("project://", "../../../") + "/");
+    var outJsonPathServer: string = null!;
+    if (config.PathJsonServer != null && config.PathJsonServer.length > 0) {
+        outJsonPathServer = path.join(__dirname, config.PathJsonServer.replace("project://", "../../../") + "/");
+    }
     const files = fs.readdirSync(inputExcelPath);
     files.forEach((f: any) => {
         let name = f.substring(0, f.indexOf("."));
         let ext = f.toString().substring(f.lastIndexOf(".") + 1);
         if (ext == "xlsx") {
-            // convert(inputExcelPath + f, inputExcelPath + "server\\" + name + ".json", name, false);        // 服务器数据
-            convert(inputExcelPath + f, outJsonPath + name + ".json", name, true);                         // 客户端数据
+            if (outJsonPathServer) convert(inputExcelPath + f, outJsonPathServer + name + ".json", name, false);                  // 服务器数据
+            convert(inputExcelPath + f, outJsonPathClient + name + ".json", name, true);                   // 客户端数据
         }
     });
 }
