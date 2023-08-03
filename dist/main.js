@@ -25,12 +25,12 @@ exports.methods = {
             console.warn("项目->项目设置->Excel To Json->PathExcel 配置路径");
             return;
         }
-        if (exports.config.PathJson == null) {
-            console.warn("项目->项目设置->Excel To Json->PathJson 配置路径");
+        if (exports.config.PathJsonClient == null) {
+            console.warn("项目->项目设置->Excel To Json->PathJsonClient 配置路径");
             return;
         }
-        if (exports.config.PathTs == null) {
-            console.warn("项目->项目设置->Excel To Json->PathTs 配置路径");
+        if (exports.config.PathTsClient == null) {
+            console.warn("项目->项目设置->Excel To Json->PathTsClient 配置路径");
             return;
         }
         (0, ExcelToJson_1.run)();

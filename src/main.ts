@@ -26,13 +26,13 @@ export const methods: { [key: string]: (...any: any) => any } = {
             return;
         }
 
-        if (config.PathJson == null) {
-            console.warn("项目->项目设置->Excel To Json->PathJson 配置路径");
+        if (config.PathJsonClient == null) {
+            console.warn("项目->项目设置->Excel To Json->PathJsonClient 配置路径");
             return;
         }
 
-        if (config.PathTs == null) {
-            console.warn("项目->项目设置->Excel To Json->PathTs 配置路径");
+        if (config.PathTsClient == null) {
+            console.warn("项目->项目设置->Excel To Json->PathTsClient 配置路径");
             return;
         }
 
