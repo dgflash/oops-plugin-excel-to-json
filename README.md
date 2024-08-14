@@ -1,5 +1,3 @@
-### 为oops-moba定制配置、脚本生成插件
-
 ### 游戏配置数据生成 + 数据对象代码生成器插件
 ![Cocos Creator 3.x 配套游戏配置数据生成 + 数据对象代码生成器插件](https://gitee.com/dgflash/oops-plugin-excel-to-json/raw/master/doc/1.png)
 
