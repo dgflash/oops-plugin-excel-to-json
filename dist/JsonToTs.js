@@ -41,7 +41,7 @@ async function createTsClient(name, fieldType, data, primary) {
         }
     }
     var script = `
-import { JsonUtil } from "../../../../../extensions/oops-plugin-framework/assets/core/utils/JsonUtil";
+import { JsonUtil } from "db://oops-framework/core/utils/JsonUtil";
 
 export class Table${name} {
     static TableName: string = "${name}";
@@ -49,7 +49,7 @@ export class Table${name} {
     private data: any;
 
     init(${script_init_params}) {
-        var table = JsonUtil.get(Table${name}.TableName);
+        const table = JsonUtil.get(Table${name}.TableName);
         this.data = table${script_init_data};
         ${script_init_value}
     }
