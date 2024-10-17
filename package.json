@@ -63,7 +63,7 @@
         },
         "menu": [
             {
-                "path": "i18n:menu.extension/oops-framework",
+                "path": "i18n:oops-plugin-excel-to-json.name/i18n:oops-plugin-excel-to-json.tools",
                 "label": "i18n:oops-plugin-excel-to-json.title",
                 "message": "excelToJson"
             }
