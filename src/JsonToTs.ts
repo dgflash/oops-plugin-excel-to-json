@@ -39,7 +39,7 @@ export async function createTsClient(name: string, fieldType: any, data: any, pr
     }
 
     var script = `
-import { JsonUtil } from "../../../../../extensions/oops-plugin-framework/assets/core/utils/JsonUtil";
+import { JsonUtil } from "db://oops-framework/core/utils/JsonUtil";
 
 export class Table${name} {
     static TableName: string = "${name}";

@@ -3,7 +3,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createTsServer = exports.createTsClient = void 0;
+exports.createTsClient = createTsClient;
+exports.createTsServer = createTsServer;
 /*
  * @Author: dgflash
  * @Date: 2022-07-26 18:21:52
@@ -49,7 +50,7 @@ export class Table${name} {
     private data: any;
 
     init(${script_init_params}) {
-        const table = JsonUtil.get(Table${name}.TableName);
+        var table = JsonUtil.get(Table${name}.TableName);
         this.data = table${script_init_data};
         ${script_init_value}
     }
@@ -61,7 +62,6 @@ ${field}
     var p = path_1.default.join(__dirname, main_1.config.PathTsClient.replace("project://", "../../../") + "/");
     await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }
-exports.createTsClient = createTsClient;
 async function createTsServer(name, fieldType, data, primary) {
     // 主键参数
     var script_init_params = "";
@@ -114,4 +114,3 @@ ${field}
     var p = path_1.default.join(__dirname, main_1.config.PathTsServer.replace("project://", "../../../") + "/");
     await fs.writeFileSync(`${p}Table${name}.ts`, script);
 }
-exports.createTsServer = createTsServer;
