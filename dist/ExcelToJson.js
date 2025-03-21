@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.run = run;
+exports.run = void 0;
 const path_1 = __importDefault(require("path"));
 const JsonToTs_1 = require("./JsonToTs");
 const main_1 = require("./main");
@@ -178,3 +178,4 @@ function run() {
         }
     });
 }
+exports.run = run;

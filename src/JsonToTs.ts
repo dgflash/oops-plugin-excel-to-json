@@ -16,10 +16,16 @@ export async function createTsClient(name: string, fieldType: any, data: any, pr
     var script_init_var = "";
     var script_init_value = "";
     primary.forEach(key => {
-        script_init_params += `${key}: number, `;
+        script_init_params += `${key}: ${fieldType[key].en}, `;
         script_init_data += `[${key}]`;
-        script_init_var += `/** ${fieldType[key].zh} */
-    ${key}: number = 0;\r    `;
+        script_init_var += `/** ${fieldType[key].zh} */\r`;
+
+        if (fieldType[key].en == "number") {
+            script_init_var += `    ${key}: ${fieldType[key].en} = 0;\r    `;
+        }
+        else {
+            script_init_var += `    ${key}: ${fieldType[key].en} = null!;\r    `;
+        }
         script_init_value += `this.${key} = ${key};\r        `
     });
     script_init_params = script_init_params.substring(0, script_init_params.length - 2);
